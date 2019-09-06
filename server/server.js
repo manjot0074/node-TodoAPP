@@ -1,3 +1,5 @@
+require('./config/config');
+
 const _ = require('lodash');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -87,6 +89,18 @@ app.delete('/todos/:id', (req, res) => {
         res.status(400).send(e);
     });
 });
+
+app.post('/users', (req, res) => {
+    var body =  _.pick(req.body, ['email', 'password']);
+    var user = new User(body);
+
+    user.save().then((userDoc) => {
+        res.send(userDoc);
+    }, (e) => {
+        res.status(400).send(e);
+    });
+});
+
 app.listen(port, ()=>{
     console.log('port started');
 });
